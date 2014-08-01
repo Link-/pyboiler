@@ -1,0 +1,9 @@
+setup.cfg
+setup.py
+pyboiler/__init__.py
+pyboiler.egg-info/PKG-INFO
+pyboiler.egg-info/SOURCES.txt
+pyboiler.egg-info/dependency_links.txt
+pyboiler.egg-info/entry_points.txt
+pyboiler.egg-info/top_level.txt
+pyboiler.egg-info/zip-safe
