@@ -1,6 +1,7 @@
 setup.cfg
 setup.py
 pyboiler/__init__.py
+pyboiler/pyboiler.py
 pyboiler.egg-info/PKG-INFO
 pyboiler.egg-info/SOURCES.txt
 pyboiler.egg-info/dependency_links.txt
