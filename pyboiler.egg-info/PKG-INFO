@@ -1,11 +1,11 @@
 Metadata-Version: 1.0
 Name: pyboiler
-Version: 0.1dev
+Version: 0.1.1dev
 Summary: Creates a configurable python project template in a given directory.
-Home-page: http://bassemdy.com
+Home-page: https://pypi.python.org/pypi/pyboiler
 Author: Link-
 Author-email: bd@bassemdy.com
-License: WTFPL
+License: LICENSE
 Description: Creates a configurable python project template in a given directory.
 Keywords: boilerplate python script configurable
 Platform: UNKNOWN
