@@ -4,7 +4,7 @@
 # | PyBoiler |
 #  ~~~~~~~~~~
 # 
-# @version: 0.1 | python 2.7.x
+# @version: alpha-0.1.4 | python 2.7.x
 # -
 # @desc: PyBoiler is a simple python script
 # that creates the basic folder/file structure
