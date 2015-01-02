@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: pyboiler
-Version: 0.1.4dev
+Version: 0.2.0dev-r0
 Summary: Creates a configurable python project template in a given directory.
 Home-page: https://pypi.python.org/pypi/pyboiler
 Author: Link-
