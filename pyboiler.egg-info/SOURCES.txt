@@ -1,6 +1,8 @@
 .
 setup.cfg
 setup.py
+bin/jparser.py
+bin/jparser.pyc
 bin/pyboiler.py
 pyboiler/__init__.py
 pyboiler/jparser.py
