@@ -4,7 +4,7 @@
 # | PyBoiler |
 #  ~~~~~~~~~~
 # 
-# @version: alpha-0.1.4 | python 2.7.x
+# @version: alpha-0.2.0 | python 2.7.x
 # -
 # @desc: PyBoiler is a simple python script
 # that creates the basic folder/file structure
@@ -32,16 +32,17 @@ import os, sys
 from os.path import join, exists
 from distutils.util import strtobool
 import argparse
+from jparser import parse_json_structure
 
-# Modify the folder stucture as you like
-FOLDER_STRUCTURE = [{'folder': 'source'}, 
-					# {'file': 'source/file1.txt'},
-					{'folder': 'sublime'}, 
-					# {'file': 'sublime/file2.txt'}, 
-					{'folder': 'docs'}, 
-					# {'file': 'docs/file3.txt'}, 
-					# {'file': 'docs/file4.txt'},
-					{'file': 'README.md'}]
+# Modify the folder structure as you like
+DEFAULT_FOLDER_STRUCTURE = [{'folder': 'source'},
+						# {'file': 'source/file1.txt'},
+						{'folder': 'sublime'},
+						# {'file': 'sublime/file2.txt'},
+						{'folder': 'docs'},
+						# {'file': 'docs/file3.txt'},
+						# {'file': 'docs/file4.txt'},
+						{'file': 'README.md'}]
 
 ''' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	--- touch(str)
@@ -58,15 +59,26 @@ def touch(path):
 	a given directory
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '''
-def build_folder_structure(project_path, override):
+def build_folder_structure(project_path, file_loc, override):
+	# Test if the file location param
+	# has been passed and is not empty
+	# Strings return false if empty
+	if file_loc:
+		folder_structure = parse_json_structure(file_loc)
+	else:
+		folder_structure = DEFAULT_FOLDER_STRUCTURE
+
+	# If user chose to override the
+	# folder structure for a pre-existing
+	# folder, notify the user either way
 	if override:
-		sys.stdout.write('Overriding content of the directory: %s \n' % project_path)
+		sys.stdout.write('[NOTICE]: Overriding content of the directory: %s \n' % project_path)
 		sys.stdout.write('Creating the folder structure now... \n\n')
 	else:
 		sys.stdout.write('Creating the folder the directory: %s \n\n' % project_path)
 
 	# Create the source dir
-	for lst in FOLDER_STRUCTURE:
+	for lst in folder_structure:
 		for t, n in lst.iteritems():
 			try:
 				# Define full path
@@ -83,7 +95,7 @@ def build_folder_structure(project_path, override):
 				sys.stdout.write('Created: %s \n' % joint_path)
 
 			except OSError:
-				sys.stdout.write('ERROR: fatal error - exiting...\n');
+				sys.stdout.write('[ERROR]: fatal error - exiting...\n');
 
 
 ''' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,6 +129,11 @@ def main():
 						help = 'Project\'s absolute path where the structure will be created', 
 						type=str, required=True)
 
+	args_parser.add_argument('-i', '--folder-structure',
+	                    dest = 'folder_structure',
+	                    help = 'JSON file containing the template folder/file structure to be created',
+	                    type=str, required=False)
+
 	received_args = args_parser.parse_args()
 
 	# We verify the received argument's validity
@@ -124,17 +141,17 @@ def main():
 	# prompt for override choice
 	if os.path.exists(received_args.project_path):
 		# Warn that the folder exists and ask if override
-		override_bool = user_yes_no_query('WARN: Folder already exists, do you wish to override it?')
+		override_bool = user_yes_no_query('[WARNING]: Folder already exists, do you wish to override it?')
 
 		if override_bool == False:
 			# Exit if no override is wanted
-			sys.exit('Cleaning up and exiting...')
-		else: 
+			sys.exit('[WARNING]: Cleaning up and exiting...')
+		else:
 			# Continue the code execution
-			build_folder_structure(received_args.project_path, True)
+			build_folder_structure(received_args.project_path, received_args.folder_structure, True)
 	else:
 		# Continue as normal
-		build_folder_structure(received_args.project_path, False)
+		build_folder_structure(received_args.project_path, received_args.folder_structure, False)
 
 
 ''' ~~~~~~~~~~
