@@ -14,38 +14,40 @@ DEFAULT_FOLDER_STRUCTURE = [
 ]
 
 
-def touch(path):
+def make_file(path):
 	"""Create an empty file in a given directory"""
 	open(path, 'a').close()
 
 
-def build_folder_structure(project_path, file_loc, override):
+def make_folder(path):
+	"""Create an empty directory"""
+	if not os.path.exists(path):
+		os.makedirs(path)
+
+
+def build_structure(target, source, override):
 	"""Builds the folder structure in a given directory"""
 
-	if file_loc:
-		folder_structure = json.load(file_loc)
+	if source:
+		structure = json.load(source)
 	else:
-		folder_structure = DEFAULT_FOLDER_STRUCTURE
+		structure = DEFAULT_FOLDER_STRUCTURE
 
-	if override:
-		print('> Overriding content of the directory: %s' % project_path)
-		print('> Creating the folder structure now... \n')
-	else:
-		print('> Creating the folder the directory: %s \n' % project_path)
+	print('> {} folder structure: {}\n'.format(
+		'Overriding' if override else 'Creating',
+		target))
 
-	for lst in folder_structure:
-		for t, n in lst.iteritems():
+	builder = {
+		'file': make_file,
+		'folder': make_folder,
+	}
+
+	for entry in structure:
+		for _type, name in entry.iteritems():
 			try:
-				joint_path = os.path.join(project_path, n)
-
-				if t == 'folder':
-					if not os.path.exists(joint_path):
-						os.makedirs(joint_path)
-				elif t == 'file':
-					touch(joint_path)
-
-				print('Created: %s' % joint_path)
-
+				joined = os.path.join(target, name)
+				builder[_type](joined)  # dispatch based on node type
+				print('Created: %s' % joined)
 			except OSError:
 				print('> Fatal error - exiting...')
 
@@ -62,41 +64,39 @@ def user_yes_no_query(question):
 			print("Please respond with 'y' or 'n'.")
 
 
-def main():
-	args_parser = argparse.ArgumentParser()
+def build_parser():
+	"""Builds the argument parser"""
+	parser = argparse.ArgumentParser()
 
-	args_parser.add_argument(
-		'-o', '--project-directory',
-		dest='project_path',
-		help='Project\'s absolute path where the structure will be created',
+	parser.add_argument(
+		'-o', '--output-directory',
+		dest='target',
+		help='Target output path where the structure will be created',
 		type=str,
 		required=True)
 
-	args_parser.add_argument(
-		'-i', '--folder-structure',
-		dest='folder_structure',
-		help='file containing the template folder/file structure to be created',
+	parser.add_argument(
+		'-s', '--source-file',
+		dest='source',
+		help='Source JSON file containing structure to be created',
 		type=str,
 		required=False)
 
-	received_args = args_parser.parse_args()
+	return parser
 
-	if os.path.exists(received_args.project_path):
-		override_bool = user_yes_no_query(
-			'[WARNING]: Folder already exists, do you wish to override it?')
 
-		if not override_bool:
-			exit('[WARNING]: Cleaning up and exiting...')
-		else:
-			build_folder_structure(
-				received_args.project_path,
-				received_args.folder_structure,
-				True)
+def main():
+	args = build_parser().parse_args()
+
+	exists = os.path.exists(args.target)
+	should_override = lambda: user_yes_no_query(
+			'> Folder already exists, do you wish to override it?')
+
+	if exists:
+		if should_override():
+			build_structure(args.target, args.source, override=True)
 	else:
-		build_folder_structure(
-			received_args.project_path,
-			received_args.folder_structure,
-			False)
+		build_structure(args.target, args.source, override=False)
 
 
 if __name__ == "__main__":
