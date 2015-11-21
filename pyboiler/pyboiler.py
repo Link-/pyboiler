@@ -1,7 +1,14 @@
 #!/usr/bin/python
+# @version: alpha-0.3.0 | python 2.7.x
+# -
+# @desc: PyBoiler is a simple python script
+# that creates the basic folder/file structure
+# for simple python projects.
+# -
 
 import argparse
 from distutils.util import strtobool
+import codecs
 import json
 import os
 
@@ -27,29 +34,33 @@ def make_folder(path):
 
 def build_structure(target, source, override):
 	"""Builds the folder structure in a given directory"""
-
 	if source:
-		structure = json.load(source)
+		try:
+			if os.path.isfile(source):
+				"""Handle UTF-8 Files"""
+				with codecs.open(source, 'rU', 'utf-8') as file_data:
+					structure = json.load(file_data)
+		except:
+			exit('> Fatal error - cannot parse the provided JSON files: %s' % source)
 	else:
+		"""Use the default structure if the above fails"""
 		structure = DEFAULT_FOLDER_STRUCTURE
 
 	print('> {} folder structure: {}\n'.format(
 		'Overriding' if override else 'Creating',
 		target))
 
-	builder = {
-		'file': make_file,
-		'folder': make_folder,
-	}
-
 	for entry in structure:
 		for _type, name in entry.iteritems():
 			try:
 				joined = os.path.join(target, name)
-				builder[_type](joined)  # dispatch based on node type
+				if _type == 'folder':
+					make_folder(joined)
+				elif _type == 'file':
+					make_file(joined)
 				print('Created: %s' % joined)
 			except OSError:
-				print('> Fatal error - exiting...')
+				exit('> Fatal error - exiting...')
 
 
 def user_yes_no_query(question):

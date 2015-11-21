@@ -3,7 +3,7 @@ PyBoiler is a simple python 2.7 script to create a project template in a given d
 
 ### Version
 
-    alpha-0.2.0
+    alpha-0.3.0
 
 ### Installation
 
@@ -40,13 +40,18 @@ PyBoiler is extremely simple to use.
       	-h, --help 	
       			Show this help message and exit
       			
-        -i FOLDER_STRUCTURE, --folder-structure FOLDER_STRUCTURE
+        -s FOLDER_STRUCTURE, --folder-structure FOLDER_STRUCTURE
                 JSON file containing the template folder/file
                 structure to be created
 
 Note: If the argument `-i` is not specified the script will use the default template (hardcoded) 
 
 ### Change Log
+### alpha-0.3.0
+* Input file argument changed to `-s` instead of `-i`
+* Temporarily removed jparser.py in order to make room for further serializers in future releases (XML, yaml etc...)
+* Code refactoring and cleanup
+
 #### alpha-0.2.0
 * Folder and File structure template can be imported from a JSON file
 * Added jparser.py to parse and validate the JSON file

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 DESCRIPTION = """\
 Creates a configurable python project template in a given directory."""
 
@@ -12,7 +12,7 @@ setup(name='pyboiler',
       classifiers=[],
       keywords='boilerplate python script configurable',
       author='Link-',
-      author_email='bd@bassemdy.com',
+      author_email='bsm.dgdy@gmail.com',
       url='https://pypi.python.org/pypi/pyboiler',
       license='LICENSE',
       packages=['pyboiler'],
