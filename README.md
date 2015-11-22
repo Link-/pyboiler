@@ -7,9 +7,7 @@ PyBoiler is a simple python 2.7 script to create a project template in a given d
 
 ### Installation
 
-	pip install pyboiler --pre
-	
-	# '--pre' is added to install pre-major-release versions
+	pip install pyboiler
 
 ### Usage
 PyBoiler is extremely simple to use. 
