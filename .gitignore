@@ -58,3 +58,6 @@ target/
 
 # pyenv
 .python-version
+
+# Workspace
+_workspace/

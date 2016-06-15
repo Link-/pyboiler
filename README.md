@@ -3,7 +3,7 @@ PyBoiler is a simple python 2.7 script to create a project template in a given d
 
 ### Version
 
-    alpha-0.3.0
+    alpha-0.4.0
 
 ### Installation
 
@@ -45,6 +45,10 @@ PyBoiler is extremely simple to use.
 Note: If the argument `-i` is not specified the script will use the default template (hardcoded) 
 
 ### Change Log
+
+### alpha-0.4.0
+* Changed project folder stucture
+
 ### alpha-0.3.0
 * Input file argument changed to `-s` instead of `-i`
 * Temporarily removed jparser.py in order to make room for further serializers in future releases (XML, yaml etc...)
